@@ -249,6 +249,17 @@
       color: var(--text-dark);
     }
 
+    .recommender-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
     .recommender-team {
       font-size: 13px;
       color: var(--text-mid);
@@ -374,6 +385,16 @@
       background: var(--primary-light);
     }
 
+    .photo-slot:has(img[src]):hover img {
+      opacity: 0.88;
+      transform: scale(1.03);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .photo-slot img {
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
     .photo-slot img {
       width: 100%;
       height: 100%;
@@ -397,6 +418,122 @@
     .photo-slot:has(img[src]) .placeholder-icon,
     .photo-slot:has(img[src]) .placeholder-text {
       display: none;
+    }
+
+    /* ── TAB NAV ── */
+    .tab-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(21,101,168,0.08);
+    }
+
+    .tab-nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      padding: 0 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tab-nav-inner::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tab-btn:hover { color: var(--primary); }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(7,21,50,0.92);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: min(90vw, 900px);
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.5);
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .lb-close:hover { background: rgba(255,255,255,0.3); }
+
+    .lb-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      font-size: 32px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .lb-arrow:hover { background: rgba(255,255,255,0.3); }
+    .lb-prev { left: 20px; }
+    .lb-next { right: 20px; }
+
+    .lb-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
     }
 
     /* ── FOOTER ── */
@@ -460,6 +597,14 @@
   <path d="M0,32 C240,0 480,50 720,32 C960,14 1200,48 1440,32 L1440,50 L0,50 Z" fill="#eef6fc"/>
 </svg>
 
+<nav class="tab-nav" id="tab-nav">
+  <div class="tab-nav-inner">
+    <a class="tab-btn active" href="#place-1">🍜 혼밥 추천</a>
+    <a class="tab-btn" href="#place-2">🍧 이색메뉴 추천</a>
+    <a class="tab-btn" href="#place-3">🍗 배터지는 메뉴 추천</a>
+  </div>
+</nav>
+
 <!-- ────────────────── CONTENT ────────────────── -->
 <div class="container">
 
@@ -469,7 +614,7 @@
   </div>
 
   <!-- ────── PLACE 1 ────── -->
-  <article class="restaurant-card">
+  <article class="restaurant-card" id="place-1">
     <div class="card-header">
       <div class="card-number">01</div>
       <div class="card-header-content">
@@ -486,8 +631,8 @@
     <div class="card-body">
       <div class="recommender-box">
         <div class="recommender-label">임직원 추천</div>
-        <div class="recommender-name">양희석</div>
-        <div class="recommender-team">NW시스템팀</div>
+        <div class="recommender-name">양희석 <span class="recommender-title">팀장</span></div>
+        <div class="recommender-team">네트워크사업본부 / NW시스템팀</div>
         <div class="menu-tags">
           <span class="menu-tag">후라데 미소라멘</span>
           <span class="menu-tag">후라데 마제소바</span>
@@ -543,7 +688,7 @@
   </article>
 
   <!-- ────── PLACE 2 ────── -->
-  <article class="restaurant-card">
+  <article class="restaurant-card" id="place-2">
     <div class="card-header">
       <div class="card-number">02</div>
       <div class="card-header-content">
@@ -560,8 +705,8 @@
     <div class="card-body">
       <div class="recommender-box">
         <div class="recommender-label">임직원 추천</div>
-        <div class="recommender-name">이태림</div>
-        <div class="recommender-team">PMO본부 / PM2팀</div>
+        <div class="recommender-name">이태림 <span class="recommender-title">매니저</span></div>
+        <div class="recommender-team">PM본부 / PM2팀</div>
         <div class="menu-tags">
           <span class="menu-tag">차돌장칼국수</span>
           <span class="menu-tag">콩국수</span>
@@ -617,7 +762,7 @@
   </article>
 
   <!-- ────── PLACE 3 ────── -->
-  <article class="restaurant-card">
+  <article class="restaurant-card" id="place-3">
     <div class="card-header">
       <div class="card-number">03</div>
       <div class="card-header-content">
@@ -634,8 +779,8 @@
     <div class="card-body">
       <div class="recommender-box">
         <div class="recommender-label">임직원 추천</div>
-        <div class="recommender-name">정원</div>
-        <div class="recommender-team">OTT시스템팀</div>
+        <div class="recommender-name">김량현</div>
+        <div class="recommender-team">개발사업본부 / OTT시스템팀</div>
         <div class="menu-tags">
           <span class="menu-tag">닭볶음탕</span>
         </div>
@@ -693,5 +838,88 @@
   이 콘텐츠는 KAON 임직원 추천 및 에디터 직접 방문을 바탕으로 제작되었습니다.
 </footer>
 
+<!-- ── LIGHTBOX ── -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()" aria-label="닫기">✕</button>
+  <button class="lb-arrow lb-prev" onclick="event.stopPropagation(); changePhoto(-1)" aria-label="이전">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-arrow lb-next" onclick="event.stopPropagation(); changePhoto(1)" aria-label="다음">›</button>
+  <div class="lb-counter" id="lb-counter"></div>
+</div>
+
+<script>
+  /* ── LIGHTBOX ── */
+  let allPhotos = [];
+  let currentIdx = 0;
+
+  function buildPhotoList() {
+    allPhotos = Array.from(document.querySelectorAll('.photo-slot img[src]'));
+    allPhotos.forEach((img, i) => {
+      img.parentElement.style.cursor = 'zoom-in';
+      img.parentElement.addEventListener('click', () => openLightbox(i));
+    });
+  }
+
+  function openLightbox(idx) {
+    currentIdx = idx;
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lb-img').src = allPhotos[idx].src;
+    document.getElementById('lb-counter').textContent = (idx + 1) + ' / ' + allPhotos.length;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function changePhoto(dir) {
+    currentIdx = (currentIdx + dir + allPhotos.length) % allPhotos.length;
+    document.getElementById('lb-img').src = allPhotos[currentIdx].src;
+    document.getElementById('lb-counter').textContent = (currentIdx + 1) + ' / ' + allPhotos.length;
+  }
+
+  document.addEventListener('keydown', e => {
+    const lb = document.getElementById('lightbox');
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  /* ── TAB NAV ACTIVE STATE ON SCROLL ── */
+  const placeIds = ['place-1', 'place-2', 'place-3'];
+  const tabBtns  = document.querySelectorAll('.tab-btn');
+
+  function updateActiveTab() {
+    const offset = 80;
+    let active = placeIds[0];
+    placeIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) active = id;
+    });
+    tabBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('href') === '#' + active);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveTab, { passive: true });
+
+  /* ── SMOOTH SCROLL OFFSET (for sticky nav) ── */
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(btn.getAttribute('href'));
+      if (!target) return;
+      const navH = document.getElementById('tab-nav').offsetHeight;
+      const y = target.getBoundingClientRect().top + window.scrollY - navH - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+
+  buildPhotoList();
+  updateActiveTab();
+</script>
 </body>
 </html>
